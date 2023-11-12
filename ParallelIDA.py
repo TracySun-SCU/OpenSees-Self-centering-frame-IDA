@@ -6,7 +6,7 @@ from mpi4py import MPI
 
 Wave_name_list = os.listdir('E:\PyCharm\Master paper-IDA\Caculation file IDA\ATC-63')
 Wave_name_list=[os.path.split(p)[-1][:-4] for p in Wave_name_list]
-Wave_dt=[0.02 for i in range(13)]
+Wave_dt = [0.02 for _ in range(13)]
 PGA_Target=[0.02,0.04,0.06,0.08,0.10,0.12,0.14,0.16,0.18,0.20,0.22,0.24,0.26,0.28,0.30,0.32,0.34,0.36,0.38,0.40,
             0.42,0.44,0.46,0.48,0.50,0.55,0.60,0.65,0.70,0.75,0.80,0.85,0.90,0.95,1.00]
 def Parallel_OS():
@@ -23,8 +23,7 @@ def Parallel_OS():
     dt = Wave_dt[rank]
     PGA_Peak = np.max(np.abs(Wave_message))
     Model()
-    jjj = 0
-    for iii in PGA_Target:
+    for jjj, iii in enumerate(PGA_Target):
         Output_PGA = f'{Wave_name_list[rank]}\\{PGA_Target[jjj]}g'
         if not os.path.exists(Output_PGA):
             os.makedirs(Output_PGA)
@@ -112,6 +111,5 @@ def Parallel_OS():
         ops.reset()
         ops.wipeAnalysis()
         print(f"{Wave_name_list[rank]}-PGA={PGA_Target[jjj]}g==>分析完成")
-        jjj += 1
 
 Parallel_OS()
